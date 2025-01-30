@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring des URLs</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      table {
+        width: 60%;
+        margin: auto;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      th {
+        background-color: #f4f4f4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔍 Monitoring des URLs</h1>
+
+    <div hx-get="/" hx-trigger="every 5s" hx-target="#status-table">
+      <table id="status-table">
+        <thead>
+          <tr>
+            <th>URL</th>
+            <th>Statut</th>
+            <th>Code</th>
+            <th>Dernière vérification</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{range .}}
+          <tr>
+            <td>{{.URL}}</td>
+            <td>{{.Status}}</td>
+            <td>{{if eq .StatusCode 0}}N/A{{else}}{{.StatusCode}}{{end}}</td>
+            <td>{{.CheckedAt.Format "15:04:05"}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
